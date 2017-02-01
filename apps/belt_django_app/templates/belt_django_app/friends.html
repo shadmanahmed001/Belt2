@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Friends Page</title>
+</head>
+<body>
+
+<a href="/logout">Logout</a>
+<h1>Welcome, {{request.session.name}}</h1>
+<h2>Here is a list of your friends</h2>
+{%for friend in friends%}
+<div>
+Name:{{friend.user.name}}
+View Profile: {{friend_id}}
+<a href="deletefriend/{{friend.user_id}}">Remove from Friends</a>
+</div>
+{%endfor%}
+
+
+
+
+<h2>Other users that are not on your friends list</h2>
+{%for user in users%}
+<div>
+Name:{{user.name}}
+<a href="user/{{user.id}}">View Profile:</a>
+<form action="addusertofriend/{{user.id}}" method="post">
+	{% csrf_token %}
+	<input type="submit" value="Add to Friends">
+</form>
+</div>
+{%endfor%}
+</body>
+</html>
