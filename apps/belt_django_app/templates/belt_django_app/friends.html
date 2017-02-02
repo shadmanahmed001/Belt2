@@ -7,14 +7,15 @@
 
 <a href="/logout">Logout</a>
 <h1>Welcome, {{request.session.name}}</h1>
+
 <h2>Here is a list of your friends</h2>
-{%for friend in friends%}
+{% for friend in user.friends.all %}
 <div>
-Name:{{friend.user.name}}
-View Profile: {{friend_id}}
-<a href="deletefriend/{{friend.user_id}}">Remove from Friends</a>
+Name:{{friend.name}}
+<a href="user/{{friend.id}}">View Profile:</a>
+<a href="deletefriend/{{friend.id}}">Remove from Friends</a>
 </div>
-{%endfor%}
+{% endfor %}
 
 
 

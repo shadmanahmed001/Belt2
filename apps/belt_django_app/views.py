@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse, redirect
-from .models import User, Friend
+from .models import User
 from django.contrib import messages
 import re
 import bcrypt
@@ -24,12 +24,18 @@ def friends(request):
 		return redirect('/')
 	else:
 		user_id = request.session['user_id']
-		users = User.objects.all()
-		friends = Friend.objects.all()
-		if friends:
+
+		anotherandomlist= User.objects.filter(id=user_id)
+		randomlist= anotherandomlist[0]
+		excluder = randomlist.friends.all()
+		print excluder
+		users = User.objects.all().exclude(id=user_id)
+		user_list = User.objects.filter(id=user_id)
+		
+		if user_list:
 			context = {
-			'users':users,
-			'friends' : friends
+			'users': users,
+			'user': user_list[0]
 			}
 			return render(request,"belt_django_app/friends.html", context)
 
@@ -56,7 +62,7 @@ def addusertofriend(request, id):
 	"user_id" : user_id,
 	"friend_id" : friend_id
 	}
-	results = Friend.objects.addusertofriend(dataObject)
+	results = User.objects.addusertofriend(dataObject)
 	if results:
 		return redirect ('/friends')
 
@@ -67,9 +73,7 @@ def deletefriend(request, id):
 	'friend_user_id': friend_user_id,
 	'user_id': user_id
 	}
-
-	print user_id
-	results=Friend.objects.deletefriend(dataObject)
+	results = User.objects.deletefriend(dataObject)
 	if results:
 		return redirect ('/friends')
 	else:
