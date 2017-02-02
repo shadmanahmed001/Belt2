@@ -24,18 +24,37 @@ def friends(request):
 		return redirect('/')
 	else:
 		user_id = request.session['user_id']
-
-		anotherandomlist= User.objects.filter(id=user_id)
-		randomlist= anotherandomlist[0]
-		excluder = randomlist.friends.all()
-		print excluder
 		users = User.objects.all().exclude(id=user_id)
 		user_list = User.objects.filter(id=user_id)
-		
+
+		userstoshow = user_list[0]
+		# this is showing all the friends i have
+		otherusers_list = userstoshow.friends.all()
+		# now i want to make 2 lists and have them compare to each other to see if my friends are in users then dont add them
+		alluserslist= User.objects.all()
+		# add all users in the users list
+		print 'this is alluserslist'
+		print alluserslist
+		# now do a check to see if allusers has friends
+		random = user_list[0]
+		allmyfriends = random.friends.all()
+		print 'this is allmyfriends'
+		print allmyfriends
+
+		notmyfriends =[]
+
+		for user in alluserslist:
+			if user not in allmyfriends:
+				notmyfriends.append(user)
+		print 'this is notmyfriends'
+		print notmyfriends
+
 		if user_list:
 			context = {
 			'users': users,
-			'user': user_list[0]
+			'user': user_list[0],
+			'alluserslist':alluserslist,
+			'notmyfriends' : notmyfriends
 			}
 			return render(request,"belt_django_app/friends.html", context)
 

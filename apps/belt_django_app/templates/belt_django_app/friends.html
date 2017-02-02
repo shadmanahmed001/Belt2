@@ -21,7 +21,7 @@ Name:{{friend.name}}
 
 
 <h2>Other users that are not on your friends list</h2>
-{%for user in users%}
+{%for user in notmyfriends%}
 <div>
 Name:{{user.name}}
 <a href="user/{{user.id}}">View Profile:</a>
@@ -31,5 +31,7 @@ Name:{{user.name}}
 </form>
 </div>
 {%endfor%}
+
+
 </body>
 </html>
